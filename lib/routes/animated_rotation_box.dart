@@ -24,7 +24,7 @@ class AnimatedRotationBoxRoute extends StatelessWidget {
             AnimatedRotationBox(
               child: GradientCircularProgressIndicator(
                 radius: 15.0,
-                colors: [Colors.red[300], Colors.orange, Colors.grey[50]],
+                colors: [Colors.red[300]!, Colors.orange, Colors.grey[50]!],
                 value: .8,
                 backgroundColor: Colors.transparent,
               ),
@@ -41,7 +41,7 @@ class AnimatedRotationBoxRoute extends StatelessWidget {
               duration: Duration(milliseconds: 800),
               child: GradientCircularProgressIndicator(
                 radius: 15.0,
-                colors: [Colors.blue, Colors.lightBlue[50]],
+                colors: [Colors.blue, Colors.lightBlue[50]!],
                 value: .8,
                 backgroundColor: Colors.transparent,
                 strokeCapRound: true,
@@ -74,7 +74,7 @@ class AnimatedRotationBoxRoute extends StatelessWidget {
                   Colors.red,
                   Colors.amber,
                   Colors.cyan,
-                  Colors.green[200],
+                  Colors.green[200]!,
                   Colors.blue,
                   Colors.red
                 ],

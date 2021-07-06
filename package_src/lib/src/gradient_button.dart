@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class GradientButton extends StatelessWidget {
   GradientButton({
-    Key key,
+    Key? key,
     this.colors,
     this.onPressed,
     this.padding,
@@ -12,29 +12,29 @@ class GradientButton extends StatelessWidget {
     this.disabledColor,
     this.disabledTextColor,
     this.onHighlightChanged,
-    @required this.child,
+    required this.child,
   }):super(key:key);
 
   // 渐变色数组
-  final List<Color> colors;
-  final Color textColor;
-  final Color splashColor;
-  final Color disabledTextColor;
-  final Color disabledColor;
-  final EdgeInsetsGeometry padding;
+  final List<Color>? colors;
+  final Color? textColor;
+  final Color? splashColor;
+  final Color? disabledTextColor;
+  final Color? disabledColor;
+  final EdgeInsetsGeometry? padding;
 
   final Widget child;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
-  final GestureTapCallback onPressed;
-  final ValueChanged<bool> onHighlightChanged;
+  final GestureTapCallback? onPressed;
+  final ValueChanged<bool>? onHighlightChanged;
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     //确保colors数组不空
     List<Color> _colors = colors ??
-        [theme.primaryColor, theme.primaryColorDark ?? theme.primaryColor];
+        [theme.primaryColor, theme.primaryColorDark];
     var radius = borderRadius ?? BorderRadius.circular(2);
     bool disabled = onPressed == null;
     return DecoratedBox(
@@ -61,7 +61,7 @@ class GradientButton extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
                 child: Center(
                   child: DefaultTextStyle(
-                    style: theme.textTheme.button.copyWith(
+                    style: theme.textTheme.button!.copyWith(
                         color: disabled
                             ? disabledTextColor ?? Colors.black38
                             : textColor ?? Colors.white),
@@ -81,7 +81,7 @@ class GradientButton extends StatelessWidget {
 
 class RaisedGradientButton extends StatefulWidget {
   RaisedGradientButton({
-    Key key,
+    Key? key,
     this.colors,
     this.onPressed,
     this.padding,
@@ -92,23 +92,23 @@ class RaisedGradientButton extends StatefulWidget {
     this.disabledTextColor,
     this.onHighlightChanged,
     this.shadowColor,
-    @required this.child,
+    required this.child,
   }):super(key:key);
 
   // 渐变色数组
-  final List<Color> colors;
-  final Color textColor;
-  final Color splashColor;
-  final Color disabledTextColor;
-  final Color disabledColor;
-  final Color shadowColor;
-  final EdgeInsetsGeometry padding;
+  final List<Color>? colors;
+  final Color? textColor;
+  final Color? splashColor;
+  final Color? disabledTextColor;
+  final Color? disabledColor;
+  final Color? shadowColor;
+  final EdgeInsetsGeometry? padding;
 
   final Widget child;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
 
-  final GestureTapCallback onPressed;
-  final ValueChanged<bool> onHighlightChanged;
+  final GestureTapCallback? onPressed;
+  final ValueChanged<bool>? onHighlightChanged;
 
   @override
   _RaisedGradientButtonState createState() => _RaisedGradientButtonState();
@@ -157,7 +157,7 @@ class _RaisedGradientButtonState extends State<RaisedGradientButton> {
             _tapDown = v;
           });
           if (widget.onHighlightChanged != null) {
-            widget.onHighlightChanged(v);
+            widget.onHighlightChanged!(v);
           }
         },
       ),

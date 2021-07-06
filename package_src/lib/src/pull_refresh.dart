@@ -44,9 +44,9 @@ abstract class PullRefreshIndicator {
 
   Widget build(
     BuildContext context,
-    PullRefreshIndicatorMode mode,
+    PullRefreshIndicatorMode? mode,
     double offset, //drag offset(over scroll)
-    ScrollDirection direction,
+    ScrollDirection? direction,
   );
 }
 
@@ -63,10 +63,10 @@ class DefaultPullRefreshIndicator implements PullRefreshIndicator {
 
   final TextStyle style;
   final Color arrowColor;
-  final String loadingTip;
-  final String pullTip;
-  final String loosenTip;
-  ProgressIndicator progressIndicator;
+  final String? loadingTip;
+  final String? pullTip;
+  final String? loosenTip;
+  ProgressIndicator? progressIndicator;
 
   @override
   double get displacement => 100.0;
@@ -75,8 +75,8 @@ class DefaultPullRefreshIndicator implements PullRefreshIndicator {
   double get height => displacement;
 
   @override
-  Widget build(BuildContext context, PullRefreshIndicatorMode mode, offset,
-      ScrollDirection direction) {
+  Widget build(BuildContext context, PullRefreshIndicatorMode? mode, offset,
+      ScrollDirection? direction) {
     if (mode == PullRefreshIndicatorMode.refresh) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -145,17 +145,17 @@ class DefaultPullRefreshIndicator implements PullRefreshIndicator {
 ///
 class PullRefreshBox extends StatefulWidget {
   PullRefreshBox({
-    Key key,
+    Key? key,
     this.child,
-    @required this.onRefresh,
-    PullRefreshIndicator indicator,
+    required this.onRefresh,
+    PullRefreshIndicator? indicator,
     this.overScrollEffect,
   })  : this.indicator = indicator ?? DefaultPullRefreshIndicator(),
         super(key: key);
 
   final PullRefreshCallback onRefresh;
-  final Widget child;
-  final TargetPlatform overScrollEffect;
+  final Widget? child;
+  final TargetPlatform? overScrollEffect;
   final PullRefreshIndicator indicator;
 
   @override
@@ -168,10 +168,10 @@ class PullRefreshBox extends StatefulWidget {
 
 class PullRefreshBoxState extends State<PullRefreshBox>
     with TickerProviderStateMixin {
-  PullRefreshIndicatorMode _mode;
-  AnimationController _controller;
+  PullRefreshIndicatorMode? _mode;
+  late AnimationController _controller;
   double _dragOffset = .0;
-  ScrollDirection _direction;
+  ScrollDirection? _direction;
   bool _refreshing = false;
 
   bool get _androidEffect =>
@@ -180,7 +180,7 @@ class PullRefreshBoxState extends State<PullRefreshBox>
           defaultTargetPlatform == TargetPlatform.android);
 
   double get _indicatorHeight =>
-      widget.indicator.height ?? widget.indicator.displacement ?? 100.0;
+      widget.indicator.height;
 
   @override
   void initState() {
@@ -235,7 +235,7 @@ class PullRefreshBoxState extends State<PullRefreshBox>
   Future _checkIfNeedRefresh() {
     if (_mode == PullRefreshIndicatorMode.refresh && !_refreshing) {
       _refreshing = true;
-      _controller.animateTo(widget.indicator.displacement ?? 100.0,
+      _controller.animateTo(widget.indicator.displacement,
           duration: Duration(milliseconds: 200));
       return widget.onRefresh().whenComplete(() {
         _mode = PullRefreshIndicatorMode.done;
@@ -252,7 +252,7 @@ class PullRefreshBoxState extends State<PullRefreshBox>
     return Stack(
       children: <Widget>[
         AnimatedBuilder(
-          builder: (BuildContext context, Widget child) {
+          builder: (BuildContext context, Widget? child) {
             return Transform.translate(
               offset: Offset(0.0, _controller.value),
               child: NotificationListener<ScrollNotification>(
@@ -263,7 +263,7 @@ class PullRefreshBoxState extends State<PullRefreshBox>
                         child: Theme(
                           data: Theme.of(context)
                               .copyWith(platform: TargetPlatform.android),
-                          child: widget.child,
+                          child: widget.child!,
                         )),
               ),
             );
@@ -272,7 +272,7 @@ class PullRefreshBoxState extends State<PullRefreshBox>
         ),
         //Header
         AnimatedBuilder(
-          builder: (BuildContext context, Widget child) {
+          builder: (BuildContext context, Widget? child) {
             return Transform.translate(
                 offset: Offset(0.0, -_indicatorHeight + _controller.value + 1),
                 child: SizedBox(
@@ -311,11 +311,11 @@ class PullRefreshBoxState extends State<PullRefreshBox>
       }
     } else if (notification is ScrollUpdateNotification) {
       if (_dragOffset > 0.0) {
-        _dragOffset -= notification.scrollDelta;
+        _dragOffset -= notification.scrollDelta!;
         _controller.value = _dragOffset;
       }
     } else if (notification is ScrollEndNotification) {
-      if (_dragOffset >= (widget.indicator.displacement ?? 100.0) &&
+      if (_dragOffset >= (widget.indicator.displacement) &&
           _mode != PullRefreshIndicatorMode.refresh) {
         setState(() {
           _mode = PullRefreshIndicatorMode.refresh;

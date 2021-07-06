@@ -14,7 +14,7 @@ class ContactListRoute extends StatefulWidget {
 }
 
 class _ContactListRouteState extends State<ContactListRoute> {
-  List<ContactInfo> _contacts = List();
+  List<ContactInfo> _contacts = [];
   double susItemHeight = 40;
 
   @override
@@ -37,7 +37,7 @@ class _ContactListRouteState extends State<ContactListRoute> {
   void _handleList(List<ContactInfo> list) {
     if (list == null || list.isEmpty) return;
     for (int i = 0, length = list.length; i < length; i++) {
-      String pinyin = PinyinHelper.getPinyinE(list[i].name);
+      String pinyin = PinyinHelper.getPinyinE(list[i].name!);
       String tag = pinyin.substring(0, 1).toUpperCase();
       list[i].namePinyin = pinyin;
       if (RegExp("[A-Z]").hasMatch(tag)) {
@@ -117,11 +117,11 @@ class _ContactListRouteState extends State<ContactListRoute> {
           leading: CircleAvatar(
             backgroundColor: Colors.blue[700],
             child: Text(
-              model.name[0],
+              model.name![0],
               style: TextStyle(color: Colors.white),
             ),
           ),
-          title: Text(model.name),
+          title: Text(model.name!),
           onTap: () {
             print("OnItemClick: $model");
             Navigator.pop(context, model);
@@ -131,11 +131,11 @@ class _ContactListRouteState extends State<ContactListRoute> {
     );
   }
 
-  Decoration getIndexBarDecoration(Color color) {
+  Decoration getIndexBarDecoration(Color? color) {
     return BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(20.0),
-        border: Border.all(color: Colors.grey[300], width: .5));
+        border: Border.all(color: Colors.grey[300]!, width: .5));
   }
 
   @override
@@ -156,7 +156,7 @@ class _ContactListRouteState extends State<ContactListRoute> {
           width: 60.0,
           height: 60.0,
           decoration: BoxDecoration(
-            color: Colors.blue[700].withAlpha(200),
+            color: Colors.blue[700]!.withAlpha(200),
             shape: BoxShape.circle,
           ),
           child:

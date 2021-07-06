@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 /// A circular progress indicator with gradient effect.
 class GradientCircularProgressIndicator extends StatelessWidget {
   GradientCircularProgressIndicator({
-    Key key,
+    Key? key,
     this.stokeWidth = 2.0,
-    @required this.radius,
-    @required this.colors,
+    required this.radius,
+    required this.colors,
     this.stops,
     this.strokeCapRound = false,
     this.backgroundColor = const Color(0xFFEEEEEE),
@@ -28,7 +28,7 @@ class GradientCircularProgressIndicator extends StatelessWidget {
   /// The value of this progress indicator with 0.0 corresponding
   /// to no progress having been made and 1.0 corresponding to all the progress
   /// having been made.
-  final double value;
+  final double? value;
 
   /// The progress indicator's background color. The current theme's
   /// `Color(0xFFEEEEEE)` by default.
@@ -61,7 +61,7 @@ class GradientCircularProgressIndicator extends StatelessWidget {
   ///
   /// If stops is null, then a set of uniformly distributed stops is implied,
   /// with the first stop at 0.0 and the last stop at 1.0.
-  final List<double> stops;
+  final List<double>? stops;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +70,7 @@ class GradientCircularProgressIndicator extends StatelessWidget {
       _offset = asin(stokeWidth / (radius * 2 - stokeWidth));
     }
     var _colors = colors;
+    // ignore: unnecessary_null_comparison
     if (_colors == null) {
       Color color = Theme
           .of(context)
@@ -99,23 +100,23 @@ class _GradientCircularProgressPainter extends CustomPainter {
     this.backgroundColor = const Color(0xFFEEEEEE),
     this.radius,
     this.total = 2 * pi,
-    @required this.colors,
+    required this.colors,
     this.stops,
     this.value});
 
   final double stokeWidth;
   final bool strokeCapRound;
-  final double value;
+  final double? value;
   final Color backgroundColor;
   final List<Color> colors;
   final double total;
-  final double radius;
-  final List<double> stops;
+  final double? radius;
+  final List<double>? stops;
 
   @override
   void paint(Canvas canvas, Size size) {
     if (radius != null) {
-      size = Size.fromRadius(radius);
+      size = Size.fromRadius(radius!);
     }
     double _offset = stokeWidth / 2.0;
     double _value = (value ?? .0);

@@ -27,7 +27,7 @@ import 'after_layout.dart';
 ///
 
 class ScaleView extends StatefulWidget {
-  ScaleView({Key key,
+  ScaleView({Key? key,
     this.minScale = 1.0,
     this.maxScale = 10.0,
     this.doubleClickScale = 3.0,
@@ -60,7 +60,7 @@ class ScaleView extends StatefulWidget {
   /// value as [HitTestBehavior.deferToChild].
   final HitTestBehavior behavior;
 
-  final Widget child;
+  final Widget? child;
 
   @override
   _ScaleViewState createState() => new _ScaleViewState();
@@ -70,28 +70,28 @@ const double _kMinFlingVelocity = 800.0;
 
 class _ScaleViewState extends State<ScaleView>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Offset> _flingAnimation;
-  Animation<double> _scaleAnimation;
+  AnimationController? _controller;
+  Animation<Offset>? _flingAnimation;
+  late Animation<double> _scaleAnimation;
   Offset _offset = Offset.zero;
   double _scale = 1.0;
-  Offset _normalizedOffset;
-  double _previousScale;
+  late Offset _normalizedOffset;
+  late double _previousScale;
   bool _doubleClick = true;
-  BuildContext _childContext;
-  Size _childSize;
-  Offset _origin;
-  Offset _focalPoint;
+  late BuildContext _childContext;
+  Size? _childSize;
+  Offset? _origin;
+  late Offset _focalPoint;
 
   //缓存子widget Size
-  Size get childSize {
+  Size? get childSize {
     //if (_childContext.size.width == Size.zero) return Size(10, 10);
     if (_childSize == null) {
-      if(_childContext.size.width<context.size.width&&_childContext.size.height<context.size.height){
+      if(_childContext.size!.width<context.size!.width&&_childContext.size!.height<context.size!.height){
         _childSize=_childContext.size;
       }else {
         _childSize =
-            applyBoxFit(BoxFit.contain, _childContext.size, context.size)
+            applyBoxFit(BoxFit.contain, _childContext.size!, context.size!)
                 .destination;
       }
       print("_childContext.size ${_childContext.size} context.size ${context.size} _childSize $_childSize", );
@@ -100,9 +100,9 @@ class _ScaleViewState extends State<ScaleView>
   }
 
   //缓存子Widget中心点
-  Offset get origin {
+  Offset? get origin {
     if (_origin == null) {
-      _origin = Offset(childSize.width / 2.0, childSize.height / 2.0);
+      _origin = Offset(childSize!.width / 2.0, childSize!.height / 2.0);
     }
     return _origin;
   }
@@ -122,19 +122,19 @@ class _ScaleViewState extends State<ScaleView>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
   Offset _clampOffset(Offset offset) {
     final Offset minOffset =
-        Offset(childSize.width, childSize.height) * (1 - _scale);
+        Offset(childSize!.width, childSize!.height) * (1 - _scale);
     if (_scale >= 1.0) {
       return Offset(
           offset.dx.clamp(minOffset.dx, .0), offset.dy.clamp(minOffset.dy, .0));
     } else {
-      return Offset(offset.dx.clamp(0.0, _childSize.width * (1 - _scale)),
-          offset.dy.clamp(0.0, _childSize.height * (1 - _scale)));
+      return Offset(offset.dx.clamp(0.0, _childSize!.width * (1 - _scale)),
+          offset.dy.clamp(0.0, _childSize!.height * (1 - _scale)));
     }
   }
 
@@ -143,10 +143,10 @@ class _ScaleViewState extends State<ScaleView>
     if (_flingAnimation == null) return;
     setState(() {
       if (_doubleClick) {
-        _offset = _flingAnimation.value;
+        _offset = _flingAnimation!.value;
         _scale = _scaleAnimation.value;
       } else {
-        _offset = _flingAnimation.value;
+        _offset = _flingAnimation!.value;
       }
     });
   }
@@ -154,10 +154,10 @@ class _ScaleViewState extends State<ScaleView>
   void _handleOnScaleStart(ScaleStartDetails details) {
     setState(() {
       _previousScale = _scale;
-      _normalizedOffset = (origin - _offset) / _scale;
+      _normalizedOffset = (origin! - _offset) / _scale;
       _focalPoint = details.focalPoint;
       //开始缩放，停止之前的fling动画
-      _controller.stop();
+      _controller!.stop();
     });
   }
 
@@ -169,7 +169,7 @@ class _ScaleViewState extends State<ScaleView>
         //放大倍数在widget.minScale-maxScale倍之间。
         _scale = (_previousScale * details.scale)
             .clamp(widget.minScale, widget.maxScale);
-        _offset = origin - _normalizedOffset * _scale;
+        _offset = origin! - _normalizedOffset * _scale;
       } else {
         //垂直方向拖动
         _offset += details.focalPoint - _focalPoint;
@@ -190,35 +190,35 @@ class _ScaleViewState extends State<ScaleView>
     }
 
     final Offset direction = details.velocity.pixelsPerSecond / magnitude;
-    final double distance = (Offset.zero & context.size).shortestSide;
+    final double distance = (Offset.zero & context.size!).shortestSide;
     _flingAnimation = new Tween<Offset>(
         begin: _offset, end: _clampOffset(_offset + direction * distance))
-        .animate(_controller);
+        .animate(_controller!);
     _controller
-      ..value = 0.0
+      ?..value = 0.0
       ..fling(velocity: magnitude / 1000.0);
   }
 
   void _handleOnDoubleTab() {
     _flingAnimation = null;
-    _controller.reset();
+    _controller!.reset();
     _doubleClick = true;
-    Size size = childSize;
+    Size? size = childSize;
     if (_scale != 1.0) {
       _flingAnimation = new Tween<Offset>(begin: _offset, end: Offset.zero)
-          .animate(_controller);
+          .animate(_controller!);
       _scaleAnimation =
-          new Tween<double>(begin: _scale, end: 1.0).animate(_controller);
-      _controller.forward();
+          new Tween<double>(begin: _scale, end: 1.0).animate(_controller!);
+      _controller!.forward();
     } else {
-      size = size * (widget.doubleClickScale - 1);
+      size = size! * (widget.doubleClickScale - 1);
       _flingAnimation = new Tween<Offset>(
           begin: Offset.zero, end: Offset(size.width, size.height) / -2.0)
-          .animate(_controller);
+          .animate(_controller!);
       _scaleAnimation =
           new Tween<double>(begin: _scale, end: widget.doubleClickScale)
-              .animate(_controller);
-      _controller.forward();
+              .animate(_controller!);
+      _controller!.forward();
     }
   }
 

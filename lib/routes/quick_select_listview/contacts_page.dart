@@ -13,8 +13,8 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  List<ContactInfo> contactList = List();
-  List<ContactInfo> topList = List();
+  List<ContactInfo> contactList = [];
+  List<ContactInfo> topList = [];
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void _handleList(List<ContactInfo> list) {
     if (list == null || list.isEmpty) return;
     for (int i = 0, length = list.length; i < length; i++) {
-      String pinyin = PinyinHelper.getPinyinE(list[i].name);
+      String pinyin = PinyinHelper.getPinyinE(list[i].name!);
       String tag = pinyin.substring(0, 1).toUpperCase();
       list[i].namePinyin = pinyin;
       if (RegExp("[A-Z]").hasMatch(tag)) {

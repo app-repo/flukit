@@ -47,7 +47,7 @@ class PullRefreshWithScrollViewState extends State<PullRefreshWithScrollView> {
               //渐变效果
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                colors: [Colors.blue, Colors.blue[50]],
+                colors: [Colors.blue, Colors.blue[50]!],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
               )),

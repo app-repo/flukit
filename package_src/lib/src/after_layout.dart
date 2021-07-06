@@ -13,8 +13,8 @@ typedef void AfterLayoutCallback(BuildContext context);
 
 class AfterLayout extends StatelessWidget {
   AfterLayout({
-    Key key,
-    @required this.callback,
+    Key? key,
+    required this.callback,
     this.child,
   }) : super(key: key);
 
@@ -22,15 +22,13 @@ class AfterLayout extends StatelessWidget {
   /// (we can consider layout phase is complete), the
   /// [callback] will be called.
   final AfterLayoutCallback callback;
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (callback != null) {
-        callback(context);
-      }
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      callback(context);
     });
-    return child;
+    return child!;
   }
 }

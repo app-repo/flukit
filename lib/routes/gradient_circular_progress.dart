@@ -12,7 +12,7 @@ class GradientCircularProgressRoute extends StatefulWidget {
 class GradientCircularProgressRouteState
     extends State<GradientCircularProgressRoute>
     with TickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class GradientCircularProgressRouteState
           children: <Widget>[
             AnimatedBuilder(
               animation: _animationController,
-              builder: (BuildContext context, Widget child) {
+              builder: (BuildContext context, Widget? child) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Column(
@@ -95,7 +95,7 @@ class GradientCircularProgressRouteState
                               radius: 50.0,
                               stokeWidth: 5.0,
                               strokeCapRound: true,
-                              backgroundColor: Colors.red[50],
+                              backgroundColor: Colors.red[50]!,
                               totalAngle: 1.5*pi,
                               value: CurvedAnimation(parent: _animationController, curve: Curves.ease).value
                             ),
@@ -103,7 +103,7 @@ class GradientCircularProgressRouteState
                           RotatedBox(
                             quarterTurns: 1,
                             child: GradientCircularProgressIndicator(
-                                colors: [Colors.blue[700], Colors.blue[200]],
+                                colors: [Colors.blue[700]!, Colors.blue[200]!],
                                 radius: 50.0,
                                 stokeWidth: 3.0,
                                 strokeCapRound: true,
@@ -116,7 +116,7 @@ class GradientCircularProgressRouteState
                               Colors.red,
                               Colors.amber,
                               Colors.cyan,
-                              Colors.green[200],
+                              Colors.green[200]!,
                               Colors.blue,
                               Colors.red
                             ],
@@ -128,7 +128,7 @@ class GradientCircularProgressRouteState
                         ],
                       ),
                       GradientCircularProgressIndicator(
-                        colors: [Colors.blue[700], Colors.blue[200]],
+                        colors: [Colors.blue[700]!, Colors.blue[200]!],
                         radius: 100.0,
                         stokeWidth: 20.0,
                         value: _animationController.value,
@@ -137,7 +137,7 @@ class GradientCircularProgressRouteState
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                         child: GradientCircularProgressIndicator(
-                          colors: [Colors.blue[700], Colors.blue[300]],
+                          colors: [Colors.blue[700]!, Colors.blue[300]!],
                           radius: 100.0,
                           stokeWidth: 20.0,
                           value: _animationController.value,
@@ -156,7 +156,7 @@ class GradientCircularProgressRouteState
                               child: TurnBox(
                                 turns: .75,
                                 child: GradientCircularProgressIndicator(
-                                  colors: [Colors.teal, Colors.cyan[500]],
+                                  colors: [Colors.teal, Colors.cyan[500]!],
                                   radius: 100.0,
                                   stokeWidth: 8.0,
                                   value: _animationController.value,
@@ -180,7 +180,7 @@ class GradientCircularProgressRouteState
                               child: TurnBox(
                                 turns: .75,
                                 child: GradientCircularProgressIndicator(
-                                  colors: [Colors.teal, Colors.cyan[500]],
+                                  colors: [Colors.teal, Colors.cyan[500]!],
                                   radius: 100.0,
                                   stokeWidth: 8.0,
                                   value: _animationController.value,

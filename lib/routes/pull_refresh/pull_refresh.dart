@@ -19,7 +19,7 @@ class _PullRefreshRouteState extends State<PullRefreshRoute> {
         //every time call `setState`, this call back will be called.
         if(!_init) {
           _init=true;
-          _pullRefreshKey.currentState.show();
+          _pullRefreshKey.currentState!.show();
         }
       },
       child: PullRefreshBox(

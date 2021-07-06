@@ -9,13 +9,13 @@ class SwiperStyleRoute extends StatefulWidget {
 
 class _SwiperStyleRouteState extends State<SwiperStyleRoute> {
   bool _circular = false;
-  SwiperController swiperController;
+  SwiperController? swiperController;
 
   @override
   void initState() {
     super.initState();
     swiperController = new SwiperController();
-    swiperController.addListener(() {
+    swiperController!.addListener(() {
 //      print(swiperController.index);
 //      print(swiperController.page);
     });
@@ -23,7 +23,7 @@ class _SwiperStyleRouteState extends State<SwiperStyleRoute> {
 
   @override
   void dispose() {
-    swiperController.dispose();
+    swiperController!.dispose();
     super.dispose();
   }
 
@@ -57,27 +57,27 @@ class _SwiperStyleRouteState extends State<SwiperStyleRoute> {
         RaisedButton(
           child: Text("Prev"),
           onPressed: () {
-            swiperController.previousPage(
+            swiperController!.previousPage(
                 duration: Duration(milliseconds: 200), curve: Curves.easeOut);
           },
         ),
         RaisedButton(
           child: Text("Next"),
           onPressed: () {
-            swiperController.nextPage(
+            swiperController!.nextPage(
                 duration: Duration(milliseconds: 200), curve: Curves.easeOut);
           },
         ),
         RaisedButton(
           child: Text("start"),
           onPressed: () {
-            swiperController.start();
+            swiperController!.start();
           },
         ),
         RaisedButton(
           child: Text("Stop"),
           onPressed: () {
-            swiperController.stop();
+            swiperController!.stop();
           },
         )
       ],

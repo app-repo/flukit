@@ -15,7 +15,7 @@ class CitySelectCustomHeaderRoute extends StatefulWidget {
 
 class _CitySelectCustomHeaderRouteState
     extends State<CitySelectCustomHeaderRoute> {
-  List<CityModel> cityList = List();
+  List<CityModel> cityList = [];
   double susItemHeight = 36;
   String imgFavorite = Utils.getImgPath('ic_favorite');
 
@@ -43,7 +43,7 @@ class _CitySelectCustomHeaderRouteState
   void _handleList(List<CityModel> list) {
     if (list == null || list.isEmpty) return;
     for (int i = 0, length = list.length; i < length; i++) {
-      String pinyin = PinyinHelper.getPinyinE(list[i].name);
+      String pinyin = PinyinHelper.getPinyinE(list[i].name!);
       String tag = pinyin.substring(0, 1).toUpperCase();
       list[i].namePinyin = pinyin;
       if (RegExp('[A-Z]').hasMatch(tag)) {
@@ -69,7 +69,7 @@ class _CitySelectCustomHeaderRouteState
   }
 
   Widget _buildHeader() {
-    List<CityModel> hotCityList = List();
+    List<CityModel> hotCityList = [];
     hotCityList.addAll([
       CityModel(name: "北京市"),
       CityModel(name: "广州市"),
@@ -86,8 +86,8 @@ class _CitySelectCustomHeaderRouteState
         spacing: 10.0,
         children: hotCityList.map((e) {
           return OutlineButton(
-            borderSide: BorderSide(color: Colors.grey[300], width: .5),
-            child: Text(e.name),
+            borderSide: BorderSide(color: Colors.grey[300]!, width: .5),
+            child: Text(e.name!),
             onPressed: () {
               print("OnItemClick: $e");
               Navigator.pop(context, e);

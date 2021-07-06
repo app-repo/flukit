@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// if return `true`, indicates no more data;
 typedef RetrieveDataCallback<T> = Future<bool> Function(
     int page, List<T> items, bool refresh);
-typedef ItemBuilder<T> = Widget Function(T e, BuildContext ctx);
+typedef ItemBuilder<T> = Widget Function(T? e, BuildContext ctx);
 typedef IndexedItemBuilder<T> = Widget Function(
     List<T> list, int index, BuildContext ctx);
 
@@ -23,9 +23,9 @@ class LoadingState<T> {
 
 class InfiniteListView<T> extends StatefulWidget {
   InfiniteListView({
-    Key key,
-    @required this.onRetrieveData,
-    @required this.itemBuilder,
+    Key? key,
+    required this.onRetrieveData,
+    required this.itemBuilder,
     this.initFailBuilder,
     this.initLoadingBuilder,
     this.scrollController,
@@ -51,40 +51,40 @@ class InfiniteListView<T> extends StatefulWidget {
   final RetrieveDataCallback<T> onRetrieveData;
 
   /// Loading indicator for the first page.
-  final WidgetBuilder initLoadingBuilder;
+  final WidgetBuilder? initLoadingBuilder;
 
   /// Loading indicator for the first page.
-  final WidgetBuilder loadingBuilder;
+  final WidgetBuilder? loadingBuilder;
 
   /// List item builder
   final IndexedItemBuilder<T> itemBuilder;
 
   /// List item separator builder
-  final IndexedItemBuilder<T> separatorBuilder;
+  final IndexedItemBuilder<T>? separatorBuilder;
 
   /// List header builder
-  final ItemBuilder<List<T>> headerBuilder;
+  final ItemBuilder<List<T>>? headerBuilder;
 
   /// When request failed, build Error View
-  final ItemBuilder loadMoreErrorViewBuilder;
+  final ItemBuilder? loadMoreErrorViewBuilder;
 
   /// Placeholder for no data.
   /// `refresh` indicates pull-refresh action.
-  final Widget Function(VoidCallback refresh, BuildContext context)
+  final Widget Function(VoidCallback refresh, BuildContext context)?
       emptyBuilder;
-  final ItemBuilder<List<T>> noMoreViewBuilder;
+  final ItemBuilder<List<T>>? noMoreViewBuilder;
   final Widget Function(
-          VoidCallback refresh, dynamic error, BuildContext context)
+          VoidCallback refresh, dynamic error, BuildContext context)?
       initFailBuilder;
-  final ScrollController scrollController;
-  final LoadingState initState;
-  final ScrollPhysics physics;
+  final ScrollController? scrollController;
+  final LoadingState? initState;
+  final ScrollPhysics? physics;
   final bool sliver;
 }
 
-class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
+class _InfiniteListViewState<T> extends State<InfiniteListView<T?>> {
   dynamic error;
-  LoadingState state;
+  late LoadingState state;
   bool refreshing = false;
   dynamic initError;
 
@@ -104,7 +104,7 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
     state.loading = true;
     try {
       var hasMore = await widget.onRetrieveData(
-          state.currentPage + 1, state.items, false);
+          state.currentPage + 1, state.items as List<T>, false);
       if (!hasMore) {
         state.noMore = true;
       }
@@ -141,7 +141,7 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
       state.items = _items;
       state.currentPage = 1;
     } catch (e) {
-      debugPrint("infiniteListView: $e \n ${e.stackTrace}");
+      debugPrint("infiniteListView: $e \n $e");
       if (state.currentPage == 0) {
         initError = e;
       }
@@ -158,7 +158,7 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
   Widget build(BuildContext context) {
     if (initError != null) {
       if (widget.initFailBuilder != null) {
-        return widget.initFailBuilder(() {
+        return widget.initFailBuilder!(() {
           initError = null;
           refresh(false);
         }, initError, context);
@@ -177,14 +177,14 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
   Widget _buildInitLoadingOrErrorView(context) {
     if (state.noMore) {
       if (widget.emptyBuilder != null) {
-        return widget.emptyBuilder(() => refresh(false), context);
+        return widget.emptyBuilder!(() => refresh(false), context);
       } else {
         return _buildEmptyView(context);
       }
     } else {
 
       if (widget.initLoadingBuilder != null) {
-        return widget.initLoadingBuilder(context);
+        return widget.initLoadingBuilder!(context);
       } else {
         return Center(
           child: SizedBox(
@@ -234,7 +234,7 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
 
   Widget _loadingMoreView() {
     if(widget.loadingBuilder!=null){
-      return widget.loadingBuilder(context);
+      return widget.loadingBuilder!(context);
     }
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -263,7 +263,7 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
   Widget _itemBuilder(BuildContext context, int index) {
     if (_hasHeader) {
       if (index == 0) {
-        Widget header = widget.headerBuilder(state.items, context);
+        Widget header = widget.headerBuilder!(state.items as List<T>?, context);
         if (state.loading && state.items.isEmpty) {
           header = Column(
             children: <Widget>[
@@ -280,7 +280,7 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
       if (error != null) {
         Widget e;
         if (widget.loadMoreErrorViewBuilder != null) {
-          e = widget.loadMoreErrorViewBuilder(error, context);
+          e = widget.loadMoreErrorViewBuilder!(error, context);
         } else {
           e = Text('Error, Click to retry!');
         }
@@ -295,7 +295,7 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
         );
       } else if (state.noMore || refreshing) {
         if (widget.noMoreViewBuilder != null) {
-          return widget.noMoreViewBuilder(state.items, context);
+          return widget.noMoreViewBuilder!(state.items as List<T>?, context);
         } else {
           return Container(
             alignment: Alignment.center,
@@ -311,14 +311,14 @@ class _InfiniteListViewState<T> extends State<InfiniteListView<T>> {
         return _loadingMoreView();
       }
     } else {
-      var w = widget.itemBuilder(state.items, index, context);
+      var w = widget.itemBuilder(state.items as List<T>, index, context);
       if (widget.separatorBuilder != null) {
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             w,
-            widget.separatorBuilder(state.items, index, context),
+            widget.separatorBuilder!(state.items as List<T>, index, context),
           ],
         );
       }

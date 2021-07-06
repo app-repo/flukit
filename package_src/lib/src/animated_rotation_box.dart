@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 /// Rotates forever
 class AnimatedRotationBox extends StatefulWidget {
   AnimatedRotationBox({
-    Key key,
+    Key? key,
     this.child,
     this.duration = const Duration(seconds: 1),
     this.curve = Curves.linear,
   }) :super(key: key);
 
-  final Widget child;
+  final Widget? child;
   final Duration duration;
   final Curve curve;
 
@@ -21,7 +21,7 @@ class AnimatedRotationBox extends StatefulWidget {
 
 class _AnimatedRotationBoxState extends State<AnimatedRotationBox>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {

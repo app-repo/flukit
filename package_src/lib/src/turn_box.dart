@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 class TurnBox extends StatefulWidget {
   const TurnBox({
-    Key key,
+    Key? key,
     this.turns = .0,
     this.speed = 200,
     this.child,
@@ -19,14 +19,14 @@ class TurnBox extends StatefulWidget {
   /// Animation duration in milliseconds
   final int speed;
 
-  final Widget child;
+  final Widget? child;
 
   @override
   _TurnBoxState createState() => new _TurnBoxState();
 }
 
 class _TurnBoxState extends State<TurnBox> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _TurnBoxState extends State<TurnBox> with SingleTickerProviderStateMixin {
     if (oldWidget.turns != widget.turns) {
       _controller.animateTo(
         widget.turns,
-        duration: Duration(milliseconds: widget.speed ?? 200),
+        duration: Duration(milliseconds: widget.speed),
         curve: Curves.easeOut,
       );
     }

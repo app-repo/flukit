@@ -15,27 +15,27 @@ class ImageBean extends DragBean {
   });
 
   /// origin picture file path.
-  String originPath;
+  String? originPath;
 
   /// middle picture file path.
-  String middlePath;
+  String? middlePath;
 
   /// thumb picture file path.
   /// It is recommended to use a thumbnail picture，because the original picture is too large,
   /// it may cause repeated loading and cause flashing.
-  String thumbPath;
+  String? thumbPath;
 
   /// original image width.
-  int originalWidth;
+  int? originalWidth;
 
   /// original image height.
-  int originalHeight;
+  int? originalHeight;
 }
 
 class CityModel extends ISuspensionBean {
-  String name;
-  String tagIndex;
-  String namePinyin;
+  String? name;
+  String? tagIndex;
+  String? namePinyin;
 
   CityModel({
     this.name,
@@ -53,23 +53,23 @@ class CityModel extends ISuspensionBean {
       };
 
   @override
-  String getSuspensionTag() => tagIndex;
+  String getSuspensionTag() => tagIndex!;
 
   @override
   String toString() => json.encode(this);
 }
 
 class ContactInfo extends ISuspensionBean {
-  String name;
-  String tagIndex;
-  String namePinyin;
+  String? name;
+  String? tagIndex;
+  String? namePinyin;
 
-  Color bgColor;
-  IconData iconData;
+  Color? bgColor;
+  IconData? iconData;
 
-  String img;
-  String id;
-  String firstletter;
+  String? img;
+  String? id;
+  String? firstletter;
 
   ContactInfo({
     this.name,
@@ -99,7 +99,7 @@ class ContactInfo extends ISuspensionBean {
       };
 
   @override
-  String getSuspensionTag() => tagIndex;
+  String getSuspensionTag() => tagIndex!;
 
   @override
   String toString() => json.encode(this);

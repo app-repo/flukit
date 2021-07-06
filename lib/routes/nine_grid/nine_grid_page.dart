@@ -15,7 +15,7 @@ class _NineGridRouteState extends State<NineGridRoute> {
   String _title = 'QQ Group';
   NineGridType _gridType = NineGridType.qqGp;
 
-  List<ImageBean> imageList = List();
+  List<ImageBean> imageList = [];
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _NineGridRouteState extends State<NineGridRoute> {
           itemCount: itemCount,
           itemBuilder: (BuildContext context, int index) {
             ImageBean bean = imageList[index];
-            return Utils.getWidget(bean.middlePath);
+            return Utils.getWidget(bean.middlePath!);
           },
         ),
       );
@@ -64,7 +64,7 @@ class _NineGridRouteState extends State<NineGridRoute> {
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) {
         ImageBean bean = imageList[index];
-        return Utils.getWidget(bean.middlePath);
+        return Utils.getWidget(bean.middlePath!);
       },
     );
 
@@ -88,7 +88,7 @@ class _NineGridRouteState extends State<NineGridRoute> {
       shape: BoxShape.rectangle,
       borderRadius: BorderRadius.all(Radius.circular(4)),
     );
-    int total;
+    late int total;
     switch (_gridType) {
       case NineGridType.qqGp:
         total = 5;
@@ -99,8 +99,11 @@ class _NineGridRouteState extends State<NineGridRoute> {
       case NineGridType.dingTalkGp:
         total = 4;
         break;
+      default:
+        total = 0;
+        break;
     }
-    List<Widget> children = List();
+    List<Widget> children = [];
     for (int i = 0; i < 9; i++) {
       children.add(NineGridView(
         width: (MediaQuery.of(context).size.width - 64) / 3,
@@ -115,7 +118,7 @@ class _NineGridRouteState extends State<NineGridRoute> {
         itemCount: i % total + 1,
         itemBuilder: (BuildContext context, int index) {
           ImageBean bean = imageList[index];
-          return Utils.getWidget(bean.middlePath);
+          return Utils.getWidget(bean.middlePath!);
         },
       ));
     }
@@ -268,8 +271,8 @@ class QQGroup extends StatefulWidget {
 }
 
 class _QQGroupState extends State<QQGroup> with TickerProviderStateMixin {
-  AnimationController _controller;
-  List<ImageBean> imageList = List();
+  AnimationController? _controller;
+  List<ImageBean> imageList = [];
 
   @override
   void initState() {
@@ -277,10 +280,10 @@ class _QQGroupState extends State<QQGroup> with TickerProviderStateMixin {
     imageList = Utils.getTestData();
     _controller = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
-    _controller.addListener(() {
+    _controller!.addListener(() {
       setState(() {});
     });
-    _controller.repeat(reverse: true);
+    _controller!.repeat(reverse: true);
   }
 
   @override
@@ -295,12 +298,12 @@ class _QQGroupState extends State<QQGroup> with TickerProviderStateMixin {
       child: NineGridView(
         width: 200,
         height: 200,
-        arcAngle: (_controller.value * 180).round().toDouble(),
+        arcAngle: (_controller!.value * 180).round().toDouble(),
         type: NineGridType.qqGp,
         itemCount: 5,
         itemBuilder: (BuildContext context, int index) {
           ImageBean bean = imageList[index];
-          return Utils.getWidget(bean.middlePath);
+          return Utils.getWidget(bean.middlePath!);
         },
       ),
     );

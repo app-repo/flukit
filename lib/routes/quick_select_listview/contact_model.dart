@@ -1,9 +1,9 @@
 import 'package:azlistview/azlistview.dart';
 
 class ContactInfo extends ISuspensionBean {
-  String name;
-  String tagIndex;
-  String namePinyin;
+  String? name;
+  String? tagIndex;
+  String? namePinyin;
 
   ContactInfo({
     this.name,
@@ -22,8 +22,8 @@ class ContactInfo extends ISuspensionBean {
   };
 
   @override
-  String getSuspensionTag() => tagIndex;
+  String getSuspensionTag() => tagIndex!;
 
   @override
-  String toString() => "CityBean {" + " \"name\":\"" + name + "\"" + '}';
+  String toString() => "CityBean {" + " \"name\":\"" + name! + "\"" + '}';
 }

@@ -9,8 +9,8 @@ class DragSortPage extends StatefulWidget {
 }
 
 class _DragSortPageState extends State<DragSortPage> {
-  List<ImageBean> imageList = List();
-  int moveAction = MotionEvent.actionUp;
+  List<ImageBean> imageList = [];
+  int? moveAction = MotionEvent.actionUp;
   bool _canDelete = false;
 
   @override
@@ -54,7 +54,7 @@ class _DragSortPageState extends State<DragSortPage> {
             itemBuilder: (BuildContext context, int index) {
               ImageBean bean = imageList[index];
               // It is recommended to use a thumbnail picture
-              return Utils.getWidget(bean.thumbPath);
+              return Utils.getWidget(bean.thumbPath!);
             },
             initBuilder: (BuildContext context) {
               return InkWell(
@@ -71,15 +71,15 @@ class _DragSortPageState extends State<DragSortPage> {
                 ),
               );
             },
-            onDragListener: (MotionEvent event, double itemWidth) {
-              switch (event.action) {
+            onDragListener: (MotionEvent? event, double itemWidth) {
+              switch (event!.action) {
                 case MotionEvent.actionDown:
                   moveAction = event.action;
                   setState(() {});
                   break;
                 case MotionEvent.actionMove:
-                  double x = event.globalX + itemWidth;
-                  double y = event.globalY + itemWidth;
+                  double x = event.globalX! + itemWidth;
+                  double y = event.globalY! + itemWidth;
                   double maxX = MediaQuery.of(context).size.width - 1 * 100;
                   double maxY = MediaQuery.of(context).size.height - 1 * 100;
                   print('maxX: $maxX, maxY: $maxY, x: $x, y: $y');

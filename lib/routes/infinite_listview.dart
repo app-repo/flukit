@@ -49,7 +49,7 @@ class _InfiniteListViewRouteState extends State<InfiniteListViewRoute> {
                 duration: Duration(milliseconds: 800),
                 child: GradientCircularProgressIndicator(
                   radius: 10.0,
-                  colors: [Colors.blue, Colors.lightBlue[50]],
+                  colors: [Colors.blue, Colors.lightBlue[50]!],
                   value: .8,
                   backgroundColor: Colors.transparent,
                   strokeCapRound: true,
@@ -65,7 +65,7 @@ class _InfiniteListViewRouteState extends State<InfiniteListViewRoute> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              "共${list.length}条",
+              "共${list!.length}条",
               style: TextStyle(color: Colors.grey),
             ),
           ),

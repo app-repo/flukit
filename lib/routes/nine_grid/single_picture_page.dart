@@ -9,7 +9,7 @@ class SinglePicturePage extends StatefulWidget {
 }
 
 class _SinglePicturePageState extends State<SinglePicturePage> {
-  List<ImageBean> imageList = List();
+  List<ImageBean> imageList = [];
 
   @override
   void initState() {
@@ -21,13 +21,13 @@ class _SinglePicturePageState extends State<SinglePicturePage> {
     int itemCount = 1;
 
     ImageBean imageBean = imageList[_index];
-    String url = imageBean.middlePath;
+    String? url = imageBean.middlePath;
 
-    int originalWidth;
-    int originalHeight;
+    int? originalWidth;
+    int? originalHeight;
 
-    Image bigImage;
-    String bigImageUrl;
+    Image? bigImage;
+    String? bigImageUrl;
 
     // Single picture display big picture.
     if (itemCount == 1) {
@@ -52,7 +52,7 @@ class _SinglePicturePageState extends State<SinglePicturePage> {
           bigImageUrl: bigImageUrl,
           itemCount: itemCount,
           itemBuilder: (BuildContext context, int index) {
-            return Utils.getWidget(url);
+            return Utils.getWidget(url!);
           },
         )
       ],

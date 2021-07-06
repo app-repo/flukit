@@ -8,7 +8,7 @@ class Utils {
     return 'assets/images/$name.$format';
   }
 
-  static Future<T> pushPage<T extends Object>(
+  static Future<T?> pushPage<T extends Object>(
       BuildContext context, Widget page) async {
     return Navigator.push(
       context,
@@ -38,7 +38,7 @@ class Utils {
     return Image.asset(getImgPath(url), fit: BoxFit.cover);
   }
 
-  static Image getBigImage(String url) {
+  static Image? getBigImage(String? url) {
     if (url == null || url.isEmpty) return null;
     if (url.startsWith('http')) {
       //return Image(image: CachedNetworkImageProvider(url), fit: BoxFit.cover);
@@ -64,7 +64,7 @@ class Utils {
       'sea',
       'india_tanjore_bronze_works',
     ];
-    List<ImageBean> list = List();
+    List<ImageBean> list = [];
     for (int i = 0; i < urlList.length; i++) {
       String url = urlList[i];
       list.add(ImageBean(
@@ -103,7 +103,7 @@ class Utils {
   static Widget getListItem(BuildContext context, CityModel model,
       {double susHeight = 40}) {
     return ListTile(
-      title: Text(model.name),
+      title: Text(model.name!),
       onTap: () {
         //LogUtil.e("onItemClick : $model");
         Utils.showSnackBar(context, 'onItemClick : ${model.name}');
@@ -132,7 +132,7 @@ class Utils {
     BuildContext context,
     ContactInfo model, {
     double susHeight = 40,
-    Color defHeaderBgColor,
+    Color? defHeaderBgColor,
   }) {
     return getWeChatItem(context, model, defHeaderBgColor: defHeaderBgColor);
 //    return Column(
@@ -151,9 +151,9 @@ class Utils {
   static Widget getWeChatItem(
     BuildContext context,
     ContactInfo model, {
-    Color defHeaderBgColor,
+    Color? defHeaderBgColor,
   }) {
-    DecorationImage image;
+    DecorationImage? image;
 //    if (model.img != null && model.img.isNotEmpty) {
 //      image = DecorationImage(
 //        image: CachedNetworkImageProvider(model.img),
@@ -178,7 +178,7 @@ class Utils {
                 size: 20,
               ),
       ),
-      title: Text(model.name),
+      title: Text(model.name!),
       onTap: () {
         //LogUtil.e("onItemClick : $model");
         Utils.showSnackBar(context, 'onItemClick : ${model.name}');

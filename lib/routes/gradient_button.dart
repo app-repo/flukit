@@ -30,7 +30,7 @@ class GradientButtonRoute extends StatelessWidget {
           width: double.infinity,
           height: 48,
           child:  GradientButton(
-            colors: [Colors.lightGreen, Colors.green[700]],
+            colors: [Colors.lightGreen, Colors.green[700]!],
             child: Text("Submit"),
             onPressed: onTap,
           ),
@@ -39,7 +39,7 @@ class GradientButtonRoute extends StatelessWidget {
           width: double.infinity,
           height: 48,
           child:  RaisedGradientButton(
-            colors: [Colors.lightGreen, Colors.green[700]],
+            colors: [Colors.lightGreen, Colors.green[700]!],
             child: Text("Submit"),
             onPressed: onTap,
           ),

@@ -9,14 +9,14 @@ class MyPullRefreshIndicator extends PullRefreshIndicator {
     this.dragIndicator,
     this.refreshIndicator
   });
-  final Decoration decoration;
-  final TextStyle style;
-  final Widget dragIndicator;
-  final Widget refreshIndicator;
+  final Decoration? decoration;
+  final TextStyle? style;
+  final Widget? dragIndicator;
+  final Widget? refreshIndicator;
 
   @override
-  Widget build(BuildContext context, PullRefreshIndicatorMode mode,
-      double offset, ScrollDirection direction) {
+  Widget build(BuildContext context, PullRefreshIndicatorMode? mode,
+      double offset, ScrollDirection? direction) {
     Widget child;
     if (mode == PullRefreshIndicatorMode.refresh) {
       child= Row(

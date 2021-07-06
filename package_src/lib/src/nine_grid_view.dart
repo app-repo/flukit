@@ -26,7 +26,7 @@ enum NineGridType {
 }
 
 /// big image size cache map.
-Map<String, Rect> ngvBigImageSizeMap = HashMap();
+Map<String?, Rect> ngvBigImageSizeMap = HashMap();
 
 /// NineGridView
 /// like WeChat, WeiBo International, WeChat group, DingTalk group, QQ group.
@@ -40,7 +40,7 @@ class NineGridView extends StatefulWidget {
   /// 单张大图建议使用中等质量图片，因为原图太大加载耗时。
   /// you need input (bigImageWidth + bigImageHeight) or (bigImage + bigImageUrl).
   NineGridView({
-    Key key,
+    Key? key,
     this.width,
     this.height,
     this.space = 3,
@@ -52,22 +52,20 @@ class NineGridView extends StatefulWidget {
     this.color,
     this.decoration,
     this.type = NineGridType.weChat,
-    @required this.itemCount,
-    @required this.itemBuilder,
+    required this.itemCount,
+    required this.itemBuilder,
     this.bigImageWidth,
     this.bigImageHeight,
     this.bigImage,
     this.bigImageUrl,
-  })  : assert(type != null),
-        assert(itemCount == null || itemCount >= 0),
-        assert(itemBuilder != null),
+  })  : assert(itemCount >= 0),
         super(key: key);
 
   /// View width.
-  final double width;
+  final double? width;
 
   /// View height.
-  final double height;
+  final double? height;
 
   /// The number of logical pixels between each child.
   final double space;
@@ -85,13 +83,13 @@ class NineGridView extends StatefulWidget {
   final EdgeInsets margin;
 
   /// Align the [child] within the container.
-  final AlignmentGeometry alignment;
+  final AlignmentGeometry? alignment;
 
   /// The color to paint behind the [child].
-  final Color color;
+  final Color? color;
 
   /// The decoration to paint behind the [child].
-  final Decoration decoration;
+  final Decoration? decoration;
 
   /// NineGridView type.s
   final NineGridType type;
@@ -103,18 +101,18 @@ class NineGridView extends StatefulWidget {
   final IndexedWidgetBuilder itemBuilder;
 
   /// Single big picture width.
-  final int bigImageWidth;
+  final int? bigImageWidth;
 
   /// Single big picture height.
-  final int bigImageHeight;
+  final int? bigImageHeight;
 
   /// It is recommended to use a medium-quality picture, because the original picture is too large and takes time to load.
   /// 单张大图建议使用中等质量图片，因为原图太大加载耗时。
   /// Single big picture Image.
-  final Image bigImage;
+  final Image? bigImage;
 
   /// Single big picture url.
-  final String bigImageUrl;
+  final String? bigImageUrl;
 
   @override
   State<StatefulWidget> createState() {
@@ -140,6 +138,8 @@ class _NineGridViewState extends State<NineGridView> {
           crossAxisCount = 2;
         }
         break;
+      default:
+        break;
     }
     return GridView.builder(
         physics: NeverScrollableScrollPhysics(),
@@ -164,19 +164,19 @@ class _NineGridViewState extends State<NineGridView> {
 
   /// build one child.
   Widget _buildOneChild(BuildContext context) {
-    double bigImgWidth = widget.bigImageWidth?.toDouble();
-    double bigImgHeight = widget.bigImageHeight?.toDouble();
+    double? bigImgWidth = widget.bigImageWidth?.toDouble();
+    double? bigImgHeight = widget.bigImageHeight?.toDouble();
     if (!_isZero(bigImgWidth) && !_isZero(bigImgHeight)) {
-      return _getOneChild(context, bigImgWidth, bigImgHeight);
+      return _getOneChild(context, bigImgWidth!, bigImgHeight!);
     } else if (widget.bigImage != null) {
-      String bigImageUrl = widget.bigImageUrl;
-      Rect bigImgRect = ngvBigImageSizeMap[bigImageUrl];
+      String? bigImageUrl = widget.bigImageUrl;
+      Rect? bigImgRect = ngvBigImageSizeMap[bigImageUrl];
       bigImgWidth = bigImgRect?.width;
       bigImgHeight = bigImgRect?.height;
       if (!_isZero(bigImgWidth) && !_isZero(bigImgHeight)) {
-        return _getOneChild(context, bigImgWidth, bigImgHeight);
+        return _getOneChild(context, bigImgWidth!, bigImgHeight!);
       } else {
-        _ImageUtil().getImageSize(widget.bigImage).then((rect) {
+        _ImageUtil().getImageSize(widget.bigImage)!.then((rect) {
           ngvBigImageSizeMap[bigImageUrl] = rect;
           if (!mounted) return;
           setState(() {});
@@ -207,7 +207,7 @@ class _NineGridViewState extends State<NineGridView> {
     } else {
       crossAxisCount = 3;
     }
-    double itemWidth = (widget.width -
+    double itemWidth = (widget.width! -
             widget.padding.horizontal -
             (crossAxisCount - 1) * widget.space) /
         crossAxisCount;
@@ -236,7 +236,7 @@ class _NineGridViewState extends State<NineGridView> {
 
   /// build dingTalk group.
   Widget _buildDingTalkGroup(BuildContext context) {
-    double width = widget.width - widget.padding.horizontal;
+    double width = widget.width! - widget.padding.horizontal;
     int itemCount = math.min(4, widget.itemCount);
     double itemW = (width - widget.space) / 2;
     List<Widget> children = [];
@@ -263,7 +263,7 @@ class _NineGridViewState extends State<NineGridView> {
 
   /// build QQ group.
   Widget _buildQQGroup(BuildContext context) {
-    double width = widget.width - widget.padding.horizontal;
+    double width = widget.width! - widget.padding.horizontal;
     int itemCount = math.min(5, widget.itemCount);
     if (itemCount == 1) {
       return ClipOval(
@@ -275,9 +275,9 @@ class _NineGridViewState extends State<NineGridView> {
     }
 
     List<Widget> children = [];
-    double startDegree;
-    double r;
-    double r1;
+    late double startDegree;
+    double? r;
+    double? r1;
     double centerX = width / 2;
     double centerY = width / 2;
     switch (itemCount) {
@@ -315,12 +315,12 @@ class _NineGridViewState extends State<NineGridView> {
 
     for (int i = 0; i < itemCount; i++) {
       double degree1 = (itemCount == 2 || itemCount == 4) ? (-math.pi / 4) : 0;
-      double x = centerX + r1 * math.sin(degree1 + i * 2 * math.pi / itemCount);
+      double x = centerX + r1! * math.sin(degree1 + i * 2 * math.pi / itemCount);
       double y = centerY - r1 * math.cos(degree1 + i * 2 * math.pi / itemCount);
 
       double degree = startDegree + i * 2 * 180 / itemCount;
       if (degree >= 360) degree = degree % 360;
-      double previousX = r + 2 * r * math.sin(degree / 180 * math.pi);
+      double previousX = r! + 2 * r * math.sin(degree / 180 * math.pi);
       double previousY = r - 2 * r * math.cos(degree / 180 * math.pi);
 
       Widget child = Positioned.fromRect(
@@ -346,7 +346,7 @@ class _NineGridViewState extends State<NineGridView> {
   }
 
   /// double is zero.
-  bool _isZero(double value) {
+  bool _isZero(double? value) {
     return value == null || value == 0;
   }
 
@@ -416,11 +416,11 @@ class _NineGridViewState extends State<NineGridView> {
 
 /// image util.
 class _ImageUtil {
-  ImageStreamListener listener;
-  ImageStream imageStream;
+  late ImageStreamListener listener;
+  late ImageStream imageStream;
 
   /// get image size.
-  Future<Rect> getImageSize(Image image) {
+  Future<Rect>? getImageSize(Image? image) {
     if (image == null) {
       return null;
     }
@@ -433,7 +433,7 @@ class _ImageUtil {
               0, 0, info.image.width.toDouble(), info.image.height.toDouble()));
         }
       },
-      onError: (dynamic exception, StackTrace stackTrace) {
+      onError: (dynamic exception, StackTrace? stackTrace) {
         imageStream.removeListener(listener);
         if (!completer.isCompleted) {
           completer.completeError(exception, stackTrace);
@@ -457,16 +457,16 @@ class QQClipper extends CustomClipper<Path> {
     this.degree,
     this.arcAngle = 0,
     this.space,
-  }) : assert(arcAngle != null && arcAngle >= 0 && arcAngle <= 180);
+  }) : assert(arcAngle >= 0 && arcAngle <= 180);
 
-  final int total;
-  final int index;
+  final int? total;
+  final int? index;
   final int initIndex;
-  final double previousX;
-  final double previousY;
-  final double degree;
+  final double? previousX;
+  final double? previousY;
+  final double? degree;
   final double arcAngle;
-  final double space;
+  final double? space;
 
   @override
   Path getClip(Size size) {
@@ -480,9 +480,9 @@ class QQClipper extends CustomClipper<Path> {
       /// arcAngle and space, prefer to use arcAngle.
       double spaceA = arcAngle > 0
           ? (arcAngle / 2)
-          : (math.acos((r - math.min(r, space)) / r) / math.pi * 180);
-      double startA = degree + spaceA;
-      double endA = degree - spaceA;
+          : (math.acos((r - math.min(r, space!)) / r) / math.pi * 180);
+      double startA = degree! + spaceA;
+      double endA = degree! - spaceA;
       for (double i = startA; i <= 360 + endA; i = i + 1) {
         double x1 = r + r * math.sin(d2r(i));
         double y1 = r - r * math.cos(d2r(i));
@@ -494,12 +494,12 @@ class QQClipper extends CustomClipper<Path> {
           math.pi *
           180;
       double r1 = (2 * r - r * math.cos(d2r(spaceA))) / math.cos(d2r(spaceB));
-      double startB = degree - 180 - spaceB;
-      double endB = degree - 180 + spaceB;
+      double startB = degree! - 180 - spaceB;
+      double endB = degree! - 180 + spaceB;
       List<Offset> pointsB = [];
       for (double i = startB; i < endB; i = i + 1) {
-        double x1 = previousX + r1 * math.sin(d2r(i));
-        double y1 = previousY - r1 * math.cos(d2r(i));
+        double x1 = previousX! + r1 * math.sin(d2r(i));
+        double y1 = previousY! - r1 * math.cos(d2r(i));
         pointsB.add(Offset(x1, y1));
       }
       points.addAll(pointsB.reversed);
